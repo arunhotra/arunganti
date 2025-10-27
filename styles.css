@@ -136,7 +136,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Sidebar Overlay */
+/* Sidebar Overlay - Hidden on desktop */
 .sidebar-overlay {
     display: none;
     position: fixed;
@@ -151,12 +151,12 @@ body {
 }
 
 .sidebar-overlay.active {
-    display: block;
     opacity: 1;
 }
 
-/* Sidebar Menu */
+/* Sidebar Menu - Hidden on desktop */
 .sidebar-menu {
+    display: none;
     position: fixed;
     top: 0;
     right: -300px;
@@ -170,7 +170,6 @@ body {
     z-index: 1003;
     transition: right 0.3s ease;
     padding: 80px 30px 30px;
-    display: flex;
     flex-direction: column;
 }
 
@@ -304,6 +303,15 @@ body {
     /* Show hamburger menu on mobile */
     .hamburger-menu {
         display: flex;
+    }
+
+    /* Show sidebar menu elements on mobile */
+    .sidebar-menu {
+        display: flex;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
     }
 
     /* Mobile background image */
