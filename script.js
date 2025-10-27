@@ -39,10 +39,28 @@ sidebarLinks.forEach(link => {
     link.addEventListener('click', closeSidebar);
 });
 
+// About Me interactive phrases toggle
+const aboutMePhrases = document.querySelector('.about-me-phrases');
+const aboutMeLinks = document.querySelectorAll('a[href="#about"]');
+
+function toggleAboutMePhrases(event) {
+    // Toggle the visibility of phrases
+    aboutMePhrases.classList.toggle('active');
+
+    // Prevent default scroll behavior when toggling
+    event.preventDefault();
+}
+
+// Add click listeners to all About Me links (desktop and mobile)
+aboutMeLinks.forEach(link => {
+    link.addEventListener('click', toggleAboutMePhrases);
+});
+
 // Export functions for testing
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         openSidebar,
-        closeSidebar
+        closeSidebar,
+        toggleAboutMePhrases
     };
 }
