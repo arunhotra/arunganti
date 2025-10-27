@@ -1,0 +1,30 @@
+{
+  "name": "my-website",
+  "version": "1.0.0",
+  "description": "Personal portfolio website with glassmorphism design",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arunhotra/arunganti.git"
+  },
+  "keywords": ["portfolio", "website", "glassmorphism"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arunhotra/arunganti/issues"
+  },
+  "homepage": "https://github.com/arunhotra/arunganti#readme",
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "jest": "^29.7.0",
+    "jest-axe": "^9.0.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}

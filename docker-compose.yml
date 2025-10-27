@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  test:
+    build: .
+    container_name: portfolio-test
+    volumes:
+      # Mount source code for live editing
+      - ./index.html:/app/index.html:ro
+      - ./styles.css:/app/styles.css:ro
+      - ./script.js:/app/script.js:ro
+      - ./__tests__:/app/__tests__
+      - ./jest.config.js:/app/jest.config.js:ro
+      # Preserve node_modules in container
+      - /app/node_modules
+    working_dir: /app
+    command: npm test
+    stdin_open: true
+    tty: true
