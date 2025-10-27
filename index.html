@@ -22,6 +22,25 @@
         <a href="#resume" class="nav-link">Resume</a>
     </nav>
 
+    <!-- Mobile Hamburger Icon -->
+    <button class="hamburger-menu" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Mobile Sidebar Menu -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeBtn" aria-label="Close menu">&times;</button>
+        <div class="sidebar-links">
+            <a href="#about" class="sidebar-link">About Me</a>
+            <a href="#projects" class="sidebar-link">Projects</a>
+            <a href="#hobbies" class="sidebar-link">Hobbies</a>
+            <a href="#resume" class="sidebar-link">Resume</a>
+        </div>
+    </nav>
+
     <!-- Placeholder sections for future content -->
     <section id="about" class="content-section">
         <div class="content-card">
@@ -50,5 +69,36 @@
             <p>Coming soon...</p>
         </div>
     </section>
+
+    <script>
+        // Mobile menu toggle functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeBtn = document.getElementById('closeBtn');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        // Open sidebar
+        hamburgerBtn.addEventListener('click', () => {
+            sidebarMenu.classList.add('active');
+            sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        });
+
+        // Close sidebar
+        const closeSidebar = () => {
+            sidebarMenu.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Re-enable scrolling
+        };
+
+        closeBtn.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar when clicking a link
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
+    </script>
 </body>
 </html>
