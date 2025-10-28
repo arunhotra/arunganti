@@ -67,6 +67,48 @@ body {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Hobbies Interactive Phrases - Horizontal Sky Layout */
+.hobbies-phrases {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+
+    /* Horizontal Layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    /* Hidden by default */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.hobbies-phrases.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Consistent Typography - Poppins with Flair */
+.hobbies-phrases .phrase {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 48px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    white-space: nowrap;
+
+    /* Text shadow for readability over sky */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* Glassmorphism Navigation Bar */
 .top-nav {
     position: fixed;
@@ -372,6 +414,18 @@ body {
     .about-me-phrases .phrase {
         font-size: 24px;
     }
+
+    /* Responsive Hobbies Phrases */
+    .hobbies-phrases {
+        top: 12%;
+        gap: 24px;
+        max-width: 90vw;
+        padding: 0 20px;
+    }
+
+    .hobbies-phrases .phrase {
+        font-size: 24px;
+    }
 }
 
 /* Smooth Scrolling */
@@ -387,4 +441,9 @@ html {
 
 #about .content-card {
     display: none; /* Hide the placeholder card on hero section */
+}
+
+/* Hide Hobbies Content Card (uses interactive phrases instead) */
+#hobbies .content-card {
+    display: none;
 }
