@@ -44,9 +44,8 @@ const aboutMePhrases = document.querySelector('.about-me-phrases');
 const aboutMeLinks = document.querySelectorAll('a[href="#about"]');
 
 function toggleAboutMePhrases(event) {
-    // Hide hobbies phrases and projects links first to prevent overlap
+    // Hide hobbies phrases first to prevent overlap
     hobbiesPhrases.classList.remove('active');
-    projectsLinks.classList.remove('active');
 
     // Toggle the visibility of phrases
     aboutMePhrases.classList.toggle('active');
@@ -65,9 +64,8 @@ const hobbiesPhrases = document.querySelector('.hobbies-phrases');
 const hobbiesLinks = document.querySelectorAll('a[href="#hobbies"]');
 
 function toggleHobbiesPhrases(event) {
-    // Hide about me phrases and projects links first to prevent overlap
+    // Hide about me phrases first to prevent overlap
     aboutMePhrases.classList.remove('active');
-    projectsLinks.classList.remove('active');
 
     // Toggle the visibility of phrases
     hobbiesPhrases.classList.toggle('active');
@@ -81,34 +79,12 @@ hobbiesLinks.forEach(link => {
     link.addEventListener('click', toggleHobbiesPhrases);
 });
 
-// Projects links toggle
-const projectsLinks = document.querySelector('.projects-links');
-const projectsNavLinks = document.querySelectorAll('a[href="#projects"]');
-
-function toggleProjectsLinks(event) {
-    // Hide about me and hobbies phrases first to prevent overlap
-    aboutMePhrases.classList.remove('active');
-    hobbiesPhrases.classList.remove('active');
-
-    // Toggle the visibility of projects links
-    projectsLinks.classList.toggle('active');
-
-    // Prevent default scroll behavior when toggling
-    event.preventDefault();
-}
-
-// Add click listeners to all Projects links (desktop and mobile)
-projectsNavLinks.forEach(link => {
-    link.addEventListener('click', toggleProjectsLinks);
-});
-
 // Export functions for testing
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         openSidebar,
         closeSidebar,
         toggleAboutMePhrases,
-        toggleHobbiesPhrases,
-        toggleProjectsLinks
+        toggleHobbiesPhrases
     };
 }
