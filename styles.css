@@ -109,6 +109,78 @@ body {
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Projects Links - Sky Section Layout */
+.projects-links {
+    position: fixed;
+    top: 15%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    pointer-events: none;
+
+    /* Hidden by default */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.projects-links.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Project Link Base Styling with Glassmorphism */
+.projects-links a {
+    position: absolute;
+    top: 0;
+    pointer-events: auto;
+
+    /* Glassmorphism Effect */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* Styling */
+    padding: 16px 32px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+
+    /* Typography */
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+
+    /* Animation */
+    transition: all 0.3s ease;
+}
+
+/* F5 Projects - Left Side */
+.project-link-left {
+    left: 40px;
+}
+
+/* Personal Projects - Right Side */
+.project-link-right {
+    right: 40px;
+}
+
+/* Hover Effect */
+.projects-links a:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+}
+
+/* Active/Focus State */
+.projects-links a:active {
+    transform: translateY(0);
+}
+
 /* Glassmorphism Navigation Bar */
 .top-nav {
     position: fixed;
@@ -426,6 +498,24 @@ body {
     .hobbies-phrases .phrase {
         font-size: 24px;
     }
+
+    /* Responsive Projects Links */
+    .projects-links {
+        top: 12%;
+    }
+
+    .projects-links a {
+        font-size: 16px;
+        padding: 12px 24px;
+    }
+
+    .project-link-left {
+        left: 20px;
+    }
+
+    .project-link-right {
+        right: 20px;
+    }
 }
 
 /* Smooth Scrolling */
@@ -441,6 +531,11 @@ html {
 
 #about .content-card {
     display: none; /* Hide the placeholder card on hero section */
+}
+
+/* Hide Projects Content Card (uses interactive links instead) */
+#projects .content-card {
+    display: none;
 }
 
 /* Hide Hobbies Content Card (uses interactive phrases instead) */
