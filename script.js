@@ -44,8 +44,9 @@ const aboutMePhrases = document.querySelector('.about-me-phrases');
 const aboutMeLinks = document.querySelectorAll('a[href="#about"]');
 
 function toggleAboutMePhrases(event) {
-    // Hide hobbies phrases first to prevent overlap
+    // Hide other phrases first to prevent overlap
     hobbiesPhrases.classList.remove('active');
+    projectsPhrases.classList.remove('active');
 
     // Toggle the visibility of phrases
     aboutMePhrases.classList.toggle('active');
@@ -64,8 +65,9 @@ const hobbiesPhrases = document.querySelector('.hobbies-phrases');
 const hobbiesLinks = document.querySelectorAll('a[href="#hobbies"]');
 
 function toggleHobbiesPhrases(event) {
-    // Hide about me phrases first to prevent overlap
+    // Hide other phrases first to prevent overlap
     aboutMePhrases.classList.remove('active');
+    projectsPhrases.classList.remove('active');
 
     // Toggle the visibility of phrases
     hobbiesPhrases.classList.toggle('active');
