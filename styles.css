@@ -517,3 +517,8 @@ html {
 #projects .content-card {
     display: none;
 }
+
+/* Hide Resume Content Card (no action on click) */
+#resume .content-card {
+    display: none;
+}

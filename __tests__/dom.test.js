@@ -72,7 +72,7 @@ describe('DOM Structure and Elements', () => {
       expect(links.length).toBe(4);
 
       const hrefs = Array.from(links).map(link => link.getAttribute('href'));
-      expect(hrefs).toEqual(['#about', '#projects', '#hobbies', '#resume']);
+      expect(hrefs).toEqual(['#about', '#projects', '#hobbies', 'javascript:void(0)']);
 
       const texts = Array.from(links).map(link => link.textContent);
       expect(texts).toEqual(['About Me', 'Projects', 'Hobbies', 'Resume']);
@@ -122,7 +122,7 @@ describe('DOM Structure and Elements', () => {
       expect(links.length).toBe(4);
 
       const hrefs = Array.from(links).map(link => link.getAttribute('href'));
-      expect(hrefs).toEqual(['#about', '#projects', '#hobbies', '#resume']);
+      expect(hrefs).toEqual(['#about', '#projects', '#hobbies', 'javascript:void(0)']);
     });
   });
 
