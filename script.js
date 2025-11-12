@@ -79,12 +79,34 @@ hobbiesLinks.forEach(link => {
     link.addEventListener('click', toggleHobbiesPhrases);
 });
 
+// Projects interactive phrases toggle
+const projectsPhrases = document.querySelector('.projects-phrases');
+const projectsLinks = document.querySelectorAll('a[href="#projects"]');
+
+function toggleProjectsPhrases(event) {
+    // Hide about me and hobbies phrases first to prevent overlap
+    aboutMePhrases.classList.remove('active');
+    hobbiesPhrases.classList.remove('active');
+
+    // Toggle the visibility of phrases
+    projectsPhrases.classList.toggle('active');
+
+    // Prevent default scroll behavior when toggling
+    event.preventDefault();
+}
+
+// Add click listeners to all Projects links (desktop and mobile)
+projectsLinks.forEach(link => {
+    link.addEventListener('click', toggleProjectsPhrases);
+});
+
 // Export functions for testing
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         openSidebar,
         closeSidebar,
         toggleAboutMePhrases,
-        toggleHobbiesPhrases
+        toggleHobbiesPhrases,
+        toggleProjectsPhrases
     };
 }

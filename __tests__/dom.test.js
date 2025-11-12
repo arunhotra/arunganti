@@ -152,6 +152,37 @@ describe('DOM Structure and Elements', () => {
     });
   });
 
+  describe('Projects Section', () => {
+    test('has projects phrases overlay container', () => {
+      const projectsPhrases = document.querySelector('.projects-phrases');
+      expect(projectsPhrases).toBeInTheDocument();
+    });
+
+    test('projects phrases container is hidden by default', () => {
+      const projectsPhrases = document.querySelector('.projects-phrases');
+      expect(projectsPhrases.classList.contains('active')).toBe(false);
+    });
+
+    test('has F5 Projects link', () => {
+      const f5Link = document.querySelector('.projects-phrases .project-phrase.left');
+      expect(f5Link).toBeInTheDocument();
+      expect(f5Link.tagName).toBe('A');
+      expect(f5Link.textContent).toBe('F5 Projects');
+    });
+
+    test('has Personal Projects link', () => {
+      const personalLink = document.querySelector('.projects-phrases .project-phrase.right');
+      expect(personalLink).toBeInTheDocument();
+      expect(personalLink.tagName).toBe('A');
+      expect(personalLink.textContent).toBe('Personal Projects');
+    });
+
+    test('both project links have project-phrase class', () => {
+      const projectLinks = document.querySelectorAll('.projects-phrases .project-phrase');
+      expect(projectLinks.length).toBe(2);
+    });
+  });
+
   describe('ID Uniqueness', () => {
     test('all IDs are unique', () => {
       const elementsWithIds = document.querySelectorAll('[id]');
