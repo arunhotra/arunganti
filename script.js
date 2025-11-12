@@ -48,8 +48,8 @@ function toggleAboutMePhrases(event) {
     hobbiesPhrases.classList.remove('active');
     projectsPhrases.classList.remove('active');
 
-    // Toggle the visibility of phrases
-    aboutMePhrases.classList.toggle('active');
+    // Show about me phrases
+    aboutMePhrases.classList.add('active');
 
     // Prevent default scroll behavior when toggling
     event.preventDefault();
@@ -69,8 +69,8 @@ function toggleHobbiesPhrases(event) {
     aboutMePhrases.classList.remove('active');
     projectsPhrases.classList.remove('active');
 
-    // Toggle the visibility of phrases
-    hobbiesPhrases.classList.toggle('active');
+    // Show hobbies phrases
+    hobbiesPhrases.classList.add('active');
 
     // Prevent default scroll behavior when toggling
     event.preventDefault();
@@ -90,8 +90,8 @@ function toggleProjectsPhrases(event) {
     aboutMePhrases.classList.remove('active');
     hobbiesPhrases.classList.remove('active');
 
-    // Toggle the visibility of phrases
-    projectsPhrases.classList.toggle('active');
+    // Show projects phrases
+    projectsPhrases.classList.add('active');
 
     // Prevent default scroll behavior when toggling
     event.preventDefault();

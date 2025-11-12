@@ -21,7 +21,7 @@ describe('Hobbies Interactive Display', () => {
     const scriptPath = path.resolve(__dirname, '../script.js');
     const scriptContent = fs.readFileSync(scriptPath, 'utf8');
     // Remove module.exports for browser context
-    const browserScript = scriptContent.replace(/if \(typeof module[\s\S]*?\}\s*\}/s, '');
+    const browserScript = scriptContent.replace(/\/\/ Export functions for testing[\s\S]*?^\}/m, '');
     eval(browserScript);
   });
 
@@ -67,7 +67,7 @@ describe('Hobbies Interactive Display', () => {
       expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
-    test('clicking desktop Hobbies link again hides phrases', () => {
+    test('clicking desktop Hobbies link again keeps phrases visible', () => {
       const hobbiesLink = document.querySelector('.top-nav .nav-link[href="#hobbies"]');
       const phrasesContainer = document.querySelector('.hobbies-phrases');
 
@@ -75,9 +75,9 @@ describe('Hobbies Interactive Display', () => {
       hobbiesLink.click();
       expect(phrasesContainer.classList.contains('active')).toBe(true);
 
-      // Click again to hide
+      // Click again - should remain visible
       hobbiesLink.click();
-      expect(phrasesContainer.classList.contains('active')).toBe(false);
+      expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
     test('clicking mobile Hobbies link shows phrases', () => {
@@ -94,7 +94,7 @@ describe('Hobbies Interactive Display', () => {
       expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
-    test('clicking mobile Hobbies link again hides phrases', () => {
+    test('clicking mobile Hobbies link again keeps phrases visible', () => {
       const hobbiesLink = document.querySelector('.sidebar-menu .sidebar-link[href="#hobbies"]');
       const phrasesContainer = document.querySelector('.hobbies-phrases');
 
@@ -102,9 +102,9 @@ describe('Hobbies Interactive Display', () => {
       hobbiesLink.click();
       expect(phrasesContainer.classList.contains('active')).toBe(true);
 
-      // Click again to hide
+      // Click again - should remain visible
       hobbiesLink.click();
-      expect(phrasesContainer.classList.contains('active')).toBe(false);
+      expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
     test('Hobbies link prevents default scroll behavior when toggling', () => {

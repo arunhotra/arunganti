@@ -41,7 +41,7 @@ describe('DOM Structure and Elements', () => {
     });
 
     test('links to styles.css', () => {
-      const styleLink = document.querySelector('link[rel="stylesheet"]');
+      const styleLink = document.querySelector('link[rel="stylesheet"]:not([href*="googleapis"])');
       expect(styleLink).toBeInTheDocument();
       expect(styleLink.getAttribute('href')).toBe('styles.css');
     });

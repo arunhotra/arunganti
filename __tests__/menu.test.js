@@ -26,7 +26,7 @@ describe('Mobile Menu Functionality', () => {
     const scriptPath = path.resolve(__dirname, '../script.js');
     const scriptContent = fs.readFileSync(scriptPath, 'utf8');
     // Remove module.exports for browser context
-    const browserScript = scriptContent.replace(/if \(typeof module.*?\}/s, '');
+    const browserScript = scriptContent.replace(/\/\/ Export functions for testing[\s\S]*?^\}/m, '');
     eval(browserScript);
   });
 

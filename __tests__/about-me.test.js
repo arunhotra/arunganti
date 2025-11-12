@@ -21,7 +21,7 @@ describe('About Me Interactive Display', () => {
     const scriptPath = path.resolve(__dirname, '../script.js');
     const scriptContent = fs.readFileSync(scriptPath, 'utf8');
     // Remove module.exports for browser context
-    const browserScript = scriptContent.replace(/if \(typeof module[\s\S]*?\}\s*\}/s, '');
+    const browserScript = scriptContent.replace(/\/\/ Export functions for testing[\s\S]*?^\}/m, '');
     eval(browserScript);
   });
 
@@ -67,7 +67,7 @@ describe('About Me Interactive Display', () => {
       expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
-    test('clicking desktop About Me link again hides phrases', () => {
+    test('clicking desktop About Me link again keeps phrases visible', () => {
       const aboutMeLink = document.querySelector('.top-nav .nav-link[href="#about"]');
       const phrasesContainer = document.querySelector('.about-me-phrases');
 
@@ -75,9 +75,9 @@ describe('About Me Interactive Display', () => {
       aboutMeLink.click();
       expect(phrasesContainer.classList.contains('active')).toBe(true);
 
-      // Click again to hide
+      // Click again - should remain visible
       aboutMeLink.click();
-      expect(phrasesContainer.classList.contains('active')).toBe(false);
+      expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
     test('clicking mobile About Me link shows phrases', () => {
@@ -94,7 +94,7 @@ describe('About Me Interactive Display', () => {
       expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
-    test('clicking mobile About Me link again hides phrases', () => {
+    test('clicking mobile About Me link again keeps phrases visible', () => {
       const aboutMeLink = document.querySelector('.sidebar-menu .sidebar-link[href="#about"]');
       const phrasesContainer = document.querySelector('.about-me-phrases');
 
@@ -102,9 +102,9 @@ describe('About Me Interactive Display', () => {
       aboutMeLink.click();
       expect(phrasesContainer.classList.contains('active')).toBe(true);
 
-      // Click again to hide
+      // Click again - should remain visible
       aboutMeLink.click();
-      expect(phrasesContainer.classList.contains('active')).toBe(false);
+      expect(phrasesContainer.classList.contains('active')).toBe(true);
     });
 
     test('About Me link prevents default scroll behavior when toggling', () => {
