@@ -85,9 +85,16 @@ describe('Twitterizer Tool', () => {
             expect(charCount).toBeInTheDocument();
         });
 
-        test('generate button exists', () => {
-            const generateBtn = document.getElementById('generateBtn');
-            expect(generateBtn).toBeInTheDocument();
+        test('free and pro generate buttons exist', () => {
+            const generateFreeBtn = document.getElementById('generateFreeBtn');
+            const generateProBtn = document.getElementById('generateProBtn');
+            expect(generateFreeBtn).toBeInTheDocument();
+            expect(generateProBtn).toBeInTheDocument();
+        });
+
+        test('character warning element exists', () => {
+            const charWarning = document.getElementById('charWarning');
+            expect(charWarning).toBeInTheDocument();
         });
 
         test('all state containers exist', () => {
@@ -129,10 +136,12 @@ describe('Twitterizer Tool', () => {
         });
 
         test('buttons have accessible names', () => {
-            const generateBtn = document.getElementById('generateBtn');
+            const generateFreeBtn = document.getElementById('generateFreeBtn');
+            const generateProBtn = document.getElementById('generateProBtn');
             const copyBtn = document.getElementById('copyBtn');
 
-            expect(generateBtn.textContent.trim()).toBeTruthy();
+            expect(generateFreeBtn.textContent.trim()).toBeTruthy();
+            expect(generateProBtn.textContent.trim()).toBeTruthy();
             expect(copyBtn.textContent.trim()).toBeTruthy();
         });
 
@@ -213,14 +222,62 @@ describe('Twitterizer Tool', () => {
             expect(tweetInput.getAttribute('placeholder')).toBeTruthy();
         });
 
-        test('generate button is disabled by default', () => {
-            const generateBtn = document.getElementById('generateBtn');
-            expect(generateBtn.disabled).toBe(true);
+        test('generate buttons are disabled by default', () => {
+            const generateFreeBtn = document.getElementById('generateFreeBtn');
+            const generateProBtn = document.getElementById('generateProBtn');
+            expect(generateFreeBtn.disabled).toBe(true);
+            expect(generateProBtn.disabled).toBe(true);
         });
 
         test('character counter shows 0/280 initially', () => {
             const charCount = document.getElementById('charCount');
             expect(charCount.textContent).toBe('0');
+        });
+    });
+
+    describe('Free vs Pro Button Functionality', () => {
+        test('buttons have correct text', () => {
+            const generateFreeBtn = document.getElementById('generateFreeBtn');
+            const generateProBtn = document.getElementById('generateProBtn');
+
+            expect(generateFreeBtn.textContent.trim()).toContain('Free');
+            expect(generateProBtn.textContent.trim()).toContain('Pro');
+        });
+
+        test('both buttons are in button-group container', () => {
+            const buttonGroup = document.querySelector('.button-group');
+            expect(buttonGroup).toBeInTheDocument();
+
+            const freeBtn = buttonGroup.querySelector('#generateFreeBtn');
+            const proBtn = buttonGroup.querySelector('#generateProBtn');
+
+            expect(freeBtn).toBeInTheDocument();
+            expect(proBtn).toBeInTheDocument();
+        });
+
+        test('character warning is initially hidden', () => {
+            const charWarning = document.getElementById('charWarning');
+            expect(charWarning.style.display).toBe('none');
+        });
+    });
+
+    describe('Free Version Character Limit', () => {
+        test('warning message has correct text', () => {
+            const charWarning = document.getElementById('charWarning');
+            const warningText = charWarning.querySelector('p');
+
+            expect(warningText).toBeInTheDocument();
+            expect(warningText.textContent).toContain('Very close to 280 characters');
+        });
+    });
+
+    describe('Button Layout and Styling', () => {
+        test('both buttons use btn-primary class', () => {
+            const generateFreeBtn = document.getElementById('generateFreeBtn');
+            const generateProBtn = document.getElementById('generateProBtn');
+
+            expect(generateFreeBtn.classList.contains('btn-primary')).toBe(true);
+            expect(generateProBtn.classList.contains('btn-primary')).toBe(true);
         });
     });
 });
