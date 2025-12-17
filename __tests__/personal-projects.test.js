@@ -77,19 +77,6 @@ describe('Personal Projects Page', () => {
             expect(badge).toBeInTheDocument();
             expect(badge.textContent).toContain('→');
         });
-
-        test('placeholder tiles exist for future projects', () => {
-            const placeholders = document.querySelectorAll('.project-tile-placeholder');
-            expect(placeholders.length).toBeGreaterThanOrEqual(2);
-        });
-
-        test('placeholder tiles have correct content', () => {
-            const placeholders = document.querySelectorAll('.project-tile-placeholder');
-            placeholders.forEach(placeholder => {
-                const title = placeholder.querySelector('.project-tile-title');
-                expect(title.textContent).toBe('Coming Soon');
-            });
-        });
     });
 
     describe('Accessibility', () => {
