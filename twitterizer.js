@@ -18,27 +18,7 @@ const GROQ_CONFIG = {
 // DOM ELEMENTS
 // ============================================================================
 
-const elements = {
-    // Input
-    tweetInput: document.getElementById('tweetInput'),
-    charCount: document.getElementById('charCount'),
-    generateFreeBtn: document.getElementById('generateFreeBtn'),
-    generateProBtn: document.getElementById('generateProBtn'),
-    charWarning: document.getElementById('charWarning'),
-
-    // States
-    loadingState: document.getElementById('loadingState'),
-    errorState: document.getElementById('errorState'),
-    errorMessage: document.getElementById('errorMessage'),
-    retryBtn: document.getElementById('retryBtn'),
-    resultsSection: document.getElementById('resultsSection'),
-    resultsOutput: document.getElementById('resultsOutput'),
-
-    // Actions
-    copyBtn: document.getElementById('copyBtn'),
-    newTweetBtn: document.getElementById('newTweetBtn'),
-    copyFeedback: document.getElementById('copyFeedback')
-};
+let elements = {};
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -463,7 +443,27 @@ function initializeEventListeners() {
 // INITIALIZATION
 // ============================================================================
 
+function initializeElements() {
+    elements.tweetInput = document.getElementById('tweetInput');
+    elements.charCount = document.getElementById('charCount');
+    elements.generateFreeBtn = document.getElementById('generateFreeBtn');
+    elements.generateProBtn = document.getElementById('generateProBtn');
+    elements.charWarning = document.getElementById('charWarning');
+    elements.loadingState = document.getElementById('loadingState');
+    elements.errorState = document.getElementById('errorState');
+    elements.errorMessage = document.getElementById('errorMessage');
+    elements.retryBtn = document.getElementById('retryBtn');
+    elements.resultsSection = document.getElementById('resultsSection');
+    elements.resultsOutput = document.getElementById('resultsOutput');
+    elements.copyBtn = document.getElementById('copyBtn');
+    elements.newTweetBtn = document.getElementById('newTweetBtn');
+    elements.copyFeedback = document.getElementById('copyFeedback');
+}
+
 function init() {
+    // Initialize DOM elements first
+    initializeElements();
+
     // Initialize UI
     updateCharCounter();
     updateGenerateButtons();
@@ -497,6 +497,7 @@ if (typeof module !== 'undefined' && module.exports) {
         updateCharCounter,
         updateGenerateButtons,
         showState,
+        initializeElements,
         initializeEventListeners
     };
 }
