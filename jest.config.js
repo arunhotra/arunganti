@@ -14,6 +14,7 @@ module.exports = {
   // Coverage configuration
   collectCoverageFrom: [
     'script.js',
+    'twitterizer.js',
     '!node_modules/**',
     '!coverage/**'
   ],

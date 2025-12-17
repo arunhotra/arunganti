@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Twitterizer - AI-powered hashtag generator for your Twitter posts">
+    <title>Twitterizer | Personal Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared-styles.css">
+    <link rel="stylesheet" href="twitterizer.css">
+</head>
+<body>
+    <!-- Fixed Background -->
+    <div class="hero-background twitterizer-bg"></div>
+
+    <!-- Back Navigation -->
+    <nav class="back-nav" aria-label="Back navigation">
+        <a href="personal-projects.html" class="back-link" aria-label="Back to projects">
+            ← Back to Projects
+        </a>
+    </nav>
+
+    <!-- Main Tool Container -->
+    <main class="tool-container">
+        <div class="tool-card">
+            <!-- Header -->
+            <header class="tool-header">
+                <h1>Twitterizer</h1>
+                <p class="tool-description">
+                    AI-powered hashtag generator to boost your Twitter engagement
+                </p>
+            </header>
+
+            <!-- Input Section -->
+            <section class="input-section" aria-label="Tweet input area">
+                <label for="tweetInput">Your Tweet:</label>
+                <textarea
+                    id="tweetInput"
+                    placeholder="What's on your mind? Write your tweet here..."
+                    maxlength="280"
+                    rows="4"
+                    aria-label="Tweet text input"
+                ></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span>/280
+                </div>
+
+                <button id="generateBtn" class="btn-primary" disabled>
+                    Generate Hashtags
+                </button>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Generating hashtags...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="error-state" style="display: none;">
+                <p class="error-message" id="errorMessage"></p>
+                <button id="retryBtn" class="btn-secondary">Try Again</button>
+            </div>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section" style="display: none;" aria-label="Generated tweet with hashtags">
+                <h2>Your Tweet with Hashtags:</h2>
+                <div class="results-output" id="resultsOutput">
+                    <!-- Generated content will be inserted here -->
+                </div>
+                <div class="results-actions">
+                    <button id="copyBtn" class="btn-primary">
+                        Copy to Clipboard
+                    </button>
+                    <button id="newTweetBtn" class="btn-secondary">
+                        Write Another Tweet
+                    </button>
+                </div>
+                <p id="copyFeedback" class="copy-feedback" style="display: none;">
+                    ✓ Copied to clipboard!
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <script src="twitterizer.js"></script>
+</body>
+</html>

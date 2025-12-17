@@ -1,0 +1,168 @@
+/* ============================================================================
+   PERSONAL PROJECTS PAGE STYLES
+   Styles specific to personal-projects.html
+   ============================================================================ */
+
+/* Background Images */
+.hero-background {
+    background-image: url('pics/personal-web.jpg');
+}
+
+/* Page Layout */
+.projects-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 40px 40px;
+}
+
+.page-title {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+/* Project Grid */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* Project Tile - Glassmorphism Card */
+.project-tile {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    padding: 40px 30px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.project-tile:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.project-tile:active {
+    transform: translateY(-4px);
+}
+
+.project-tile-placeholder {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.project-tile-placeholder:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.project-tile-content {
+    text-align: center;
+}
+
+.project-tile-title {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 16px;
+}
+
+.project-tile-description {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.project-tile-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+}
+
+.project-tile:hover .project-tile-badge {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateX(4px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .page-title {
+        font-size: 42px;
+        margin-bottom: 40px;
+    }
+
+    .project-tile {
+        min-height: 220px;
+        padding: 30px 20px;
+    }
+
+    .project-tile-title {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Mobile background image */
+    .hero-background {
+        background-image: url('pics/personal-mobile.jpg');
+    }
+
+    .projects-container {
+        padding: 80px 20px 40px;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .page-title {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    .project-tile {
+        min-height: 200px;
+        padding: 30px 20px;
+    }
+
+    .project-tile-title {
+        font-size: 24px;
+    }
+}
