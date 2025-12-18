@@ -19,3 +19,7 @@ Thumbs.db
 # Build outputs (if any in future)
 dist/
 build/
+
+# Code workspace
+
+*.code-workspace
