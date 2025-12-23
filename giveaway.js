@@ -38,6 +38,7 @@ function initElements() {
         errorMessage: document.getElementById('errorMessage'),
         retryBtn: document.getElementById('retryBtn'),
         successState: document.getElementById('successState'),
+        successMessage: document.getElementById('successMessage'),
 
         // Gallery
         gallerySection: document.getElementById('gallerySection'),
@@ -552,6 +553,15 @@ function showError(message) {
     hideAllStates();
     elements.errorMessage.textContent = message;
     elements.errorState.style.display = 'block';
+}
+
+/**
+ * Show success message
+ */
+function showSuccess(message) {
+    hideAllStates();
+    elements.successMessage.textContent = message;
+    elements.successState.style.display = 'block';
 }
 
 // ============================================================================
