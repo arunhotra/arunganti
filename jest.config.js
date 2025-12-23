@@ -15,6 +15,7 @@ module.exports = {
   collectCoverageFrom: [
     'script.js',
     'twitterizer.js',
+    'giveaway.js',
     '!node_modules/**',
     '!coverage/**'
   ],

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Giveaway - Share items you're giving away before moving">
+    <title>Giveaway | Personal Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared-styles.css">
+    <link rel="stylesheet" href="giveaway.css">
+</head>
+<body>
+    <!-- Fixed Background -->
+    <div class="hero-background giveaway-bg"></div>
+
+    <!-- Back Navigation -->
+    <nav class="back-nav" aria-label="Back navigation">
+        <a href="personal-projects.html" class="back-link" aria-label="Back to projects">
+            ← Back to Projects
+        </a>
+    </nav>
+
+    <!-- Main Tool Container -->
+    <main class="tool-container">
+        <div class="tool-card">
+            <!-- Header -->
+            <header class="tool-header">
+                <h1>Giveaway Gallery</h1>
+                <p class="tool-description">
+                    Share items you're giving away before moving
+                </p>
+            </header>
+
+            <!-- Upload Section -->
+            <section class="upload-section" aria-label="Upload item">
+                <div class="upload-controls">
+                    <label for="imageInput" class="file-input-label">
+                        <span class="camera-icon">📷</span>
+                        <span class="label-text">Choose Photo</span>
+                    </label>
+                    <input
+                        type="file"
+                        id="imageInput"
+                        accept="image/*"
+                        capture="environment"
+                        aria-label="Select image to upload"
+                    />
+                </div>
+
+                <div id="imagePreview" class="image-preview" style="display: none;">
+                    <!-- Preview will be inserted here by JavaScript -->
+                </div>
+
+                <div class="description-container">
+                    <label for="descriptionInput">Describe your item:</label>
+                    <textarea
+                        id="descriptionInput"
+                        placeholder="e.g., IKEA desk, barely used, pickup from downtown..."
+                        maxlength="280"
+                        rows="3"
+                        aria-label="Item description"
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="descCharCount">0</span>/280
+                    </div>
+                </div>
+
+                <button id="uploadBtn" class="btn-primary" disabled>
+                    Share Item
+                </button>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Uploading your item...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="error-state" style="display: none;">
+                <p class="error-message" id="errorMessage"></p>
+                <button id="retryBtn" class="btn-secondary">Try Again</button>
+            </div>
+
+            <!-- Success State -->
+            <div id="successState" class="success-state" style="display: none;">
+                <p class="success-message">✓ Item shared successfully!</p>
+            </div>
+
+            <!-- Gallery Section -->
+            <section id="gallerySection" class="gallery-section" aria-label="Shared items gallery">
+                <h2 class="gallery-title">Available Items</h2>
+                <div id="galleryGrid" class="gallery-grid">
+                    <!-- Gallery items will be populated by JavaScript -->
+                </div>
+                <div id="galleryLoading" class="gallery-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Loading items...</p>
+                </div>
+                <div id="galleryEmpty" class="gallery-empty" style="display: none;">
+                    <p>No items yet. Be the first to share something!</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal for full-size image view -->
+    <div id="imageModal" class="image-modal" style="display: none;" aria-label="Full size image view" role="dialog">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
+            <img id="modalImage" src="" alt="Full size item image" />
+            <div class="modal-info">
+                <p id="modalDescription" class="modal-description"></p>
+                <p id="modalTimestamp" class="modal-timestamp"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="giveaway.js?v=1.0.0"></script>
+</body>
+</html>
