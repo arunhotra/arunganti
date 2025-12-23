@@ -299,6 +299,56 @@ function handleRetry() {
 }
 
 // ============================================================================
+// Delete Item
+// ============================================================================
+
+/**
+ * Delete an item from the gallery
+ */
+async function deleteItem(itemId) {
+    // Confirm deletion
+    const confirmed = confirm('Are you sure you want to delete this item?');
+    if (!confirmed) return;
+
+    // Prompt for deletion password
+    const password = prompt('Enter deletion password:');
+    if (!password) return;
+
+    try {
+        const response = await fetch(`${CONFIG.workerUrl}/delete/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to delete item');
+        }
+
+        // Remove item from DOM
+        const itemElement = document.querySelector(`[data-item-id="${itemId}"]`);
+        if (itemElement) {
+            itemElement.remove();
+        }
+
+        showSuccess('Item deleted successfully!');
+
+        // Reload gallery after a short delay
+        setTimeout(() => {
+            loadGalleryItems();
+        }, 1500);
+
+    } catch (error) {
+        console.error('Delete error:', error);
+        showError(error.message || 'Failed to delete item. Please try again.');
+    }
+}
+
+// ============================================================================
 // Gallery Display
 // ============================================================================
 
@@ -363,6 +413,14 @@ function createGalleryItem(item) {
     const fullUrl = item.imageUrl;
 
     div.innerHTML = `
+        <button class="gallery-item-delete" data-item-id="${item.id}" aria-label="Delete item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        </button>
         <img
             class="gallery-item-image"
             data-src="${CONFIG.workerUrl}${thumbnailUrl}"
@@ -376,7 +434,19 @@ function createGalleryItem(item) {
     `;
 
     // Add click handler to open modal
-    div.addEventListener('click', () => openImageModal(item));
+    div.addEventListener('click', (e) => {
+        // Don't open modal if clicking delete button
+        if (!e.target.closest('.gallery-item-delete')) {
+            openImageModal(item);
+        }
+    });
+
+    // Add delete button handler
+    const deleteBtn = div.querySelector('.gallery-item-delete');
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteItem(item.id);
+    });
 
     return div;
 }

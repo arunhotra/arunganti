@@ -53,6 +53,8 @@ export default {
             } else if (path.startsWith('/image/') && request.method === 'GET') {
                 // Proxy images from Google Drive
                 response = await handleGetImage(path, env);
+            } else if (path.startsWith('/delete/') && request.method === 'DELETE') {
+                response = await handleDelete(request, path, env);
             } else {
                 response = new Response('Not Found', { status: 404 });
             }
@@ -490,6 +492,126 @@ async function handleGetImage(path, env) {
     } catch (error) {
         console.error('Error fetching image:', error);
         return new Response('Image not found', { status: 404 });
+    }
+}
+
+// ============================================================================
+// Delete Handler
+// ============================================================================
+
+async function handleDelete(request, path, env) {
+    try {
+        // Extract item ID from path
+        const itemId = path.split('/').pop();
+
+        // Parse request body for password
+        const body = await request.json();
+        const { password } = body;
+
+        // Verify deletion password
+        if (!password || password !== env.DELETION_SECRET) {
+            return new Response(
+                JSON.stringify({ error: 'Invalid deletion password' }),
+                {
+                    status: 401,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        const accessToken = await getAccessToken(env);
+
+        // Get metadata to find the item
+        const metadataFile = await listFilesInFolder(
+            accessToken,
+            env.GOOGLE_DRIVE_FOLDER_ID,
+            CONFIG.metadataFileName
+        );
+
+        if (!metadataFile) {
+            return new Response(
+                JSON.stringify({ error: 'Metadata not found' }),
+                {
+                    status: 404,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        // Fetch metadata
+        const metadataBuffer = await getFileFromGoogleDrive(accessToken, metadataFile.id);
+        const metadataText = new TextDecoder().decode(metadataBuffer);
+        const metadata = JSON.parse(metadataText);
+
+        // Find the item to delete
+        const item = metadata.items.find(i => i.id === itemId);
+        if (!item) {
+            return new Response(
+                JSON.stringify({ error: 'Item not found' }),
+                {
+                    status: 404,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        // Delete the image file from Google Drive
+        if (item.driveFileId) {
+            await deleteFileFromGoogleDrive(accessToken, item.driveFileId);
+        }
+
+        // Remove item from metadata
+        metadata.items = metadata.items.filter(i => i.id !== itemId);
+        metadata.lastUpdated = Date.now();
+
+        // Update metadata file
+        const updatedMetadata = JSON.stringify(metadata, null, 2);
+        await updateFileInGoogleDrive(
+            accessToken,
+            metadataFile.id,
+            new TextEncoder().encode(updatedMetadata),
+            'application/json'
+        );
+
+        return new Response(
+            JSON.stringify({
+                success: true,
+                message: 'Item deleted successfully'
+            }),
+            {
+                status: 200,
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+
+    } catch (error) {
+        console.error('Error deleting item:', error);
+        return new Response(
+            JSON.stringify({ error: error.message || 'Failed to delete item' }),
+            {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+    }
+}
+
+/**
+ * Delete file from Google Drive
+ */
+async function deleteFileFromGoogleDrive(accessToken, fileId) {
+    const response = await fetch(
+        `https://www.googleapis.com/drive/v3/files/${fileId}`,
+        {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }
+    );
+
+    if (!response.ok && response.status !== 404) {
+        throw new Error(`Failed to delete file from Google Drive: ${response.statusText}`);
     }
 }
 
