@@ -300,6 +300,75 @@ function handleRetry() {
 }
 
 // ============================================================================
+// Comments
+// ============================================================================
+
+/**
+ * Render comments for display
+ */
+function renderComments(comments) {
+    if (!comments || comments.length === 0) {
+        return '<p class="no-comments">No comments yet</p>';
+    }
+
+    return comments.map(comment => `
+        <div class="comment-item">
+            <p class="comment-text">${escapeHtml(comment.text)}</p>
+            <span class="comment-time">${formatTimestamp(comment.timestamp)}</span>
+        </div>
+    `).join('');
+}
+
+/**
+ * Submit a new comment
+ */
+async function submitComment(itemId, text) {
+    const trimmedText = text.trim();
+
+    if (!trimmedText) {
+        return;
+    }
+
+    if (trimmedText.length > 200) {
+        showError('Comment is too long (max 200 characters)');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${CONFIG.workerUrl}/comment/${itemId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: trimmedText })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to post comment');
+        }
+
+        // Update the comments list in the UI
+        const commentsList = document.querySelector(`.comments-list[data-item-id="${itemId}"]`);
+        const commentInput = document.querySelector(`.comment-input[data-item-id="${itemId}"]`);
+
+        if (commentsList && data.comments) {
+            commentsList.innerHTML = renderComments(data.comments);
+        }
+
+        // Clear input
+        if (commentInput) {
+            commentInput.value = '';
+        }
+
+    } catch (error) {
+        console.error('Comment error:', error);
+        showError(error.message || 'Failed to post comment. Please try again.');
+    }
+}
+
+// ============================================================================
 // Delete Item
 // ============================================================================
 
@@ -431,13 +500,36 @@ function createGalleryItem(item) {
         <div class="gallery-item-info">
             <p class="gallery-item-description">${escapeHtml(item.description || 'No description')}</p>
             <p class="gallery-item-timestamp">${formatTimestamp(item.timestamp)}</p>
+
+            <!-- Comments Section -->
+            <div class="gallery-item-comments">
+                <div class="comments-list" data-item-id="${item.id}">
+                    ${renderComments(item.comments || [])}
+                </div>
+                <div class="comment-input-container">
+                    <input
+                        type="text"
+                        class="comment-input"
+                        placeholder="Add a comment..."
+                        maxlength="200"
+                        data-item-id="${item.id}"
+                    />
+                    <button class="comment-submit" data-item-id="${item.id}" aria-label="Post comment">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
     `;
 
     // Add click handler to open modal
     div.addEventListener('click', (e) => {
-        // Don't open modal if clicking delete button
-        if (!e.target.closest('.gallery-item-delete')) {
+        // Don't open modal if clicking delete button or comment section
+        if (!e.target.closest('.gallery-item-delete') &&
+            !e.target.closest('.gallery-item-comments')) {
             openImageModal(item);
         }
     });
@@ -447,6 +539,22 @@ function createGalleryItem(item) {
     deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         deleteItem(item.id);
+    });
+
+    // Add comment submit handler
+    const commentBtn = div.querySelector('.comment-submit');
+    const commentInput = div.querySelector('.comment-input');
+
+    commentBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        submitComment(item.id, commentInput.value);
+    });
+
+    commentInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && commentInput.value.trim()) {
+            e.stopPropagation();
+            submitComment(item.id, commentInput.value);
+        }
     });
 
     return div;

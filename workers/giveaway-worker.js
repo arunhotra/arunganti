@@ -55,6 +55,8 @@ export default {
                 response = await handleGetImage(path, env);
             } else if (path.startsWith('/delete/') && request.method === 'DELETE') {
                 response = await handleDelete(request, path, env);
+            } else if (path.startsWith('/comment/') && request.method === 'POST') {
+                response = await handleComment(request, path, env);
             } else {
                 response = new Response('Not Found', { status: 404 });
             }
@@ -612,6 +614,134 @@ async function deleteFileFromGoogleDrive(accessToken, fileId) {
 
     if (!response.ok && response.status !== 404) {
         throw new Error(`Failed to delete file from Google Drive: ${response.statusText}`);
+    }
+}
+
+// ============================================================================
+// Comment Handler
+// ============================================================================
+
+async function handleComment(request, path, env) {
+    try {
+        // Extract item ID from path
+        const itemId = path.split('/').pop();
+
+        // Parse request body
+        const body = await request.json();
+        const { text } = body;
+
+        // Validate comment text
+        if (!text || typeof text !== 'string') {
+            return new Response(
+                JSON.stringify({ error: 'Comment text is required' }),
+                {
+                    status: 400,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        const trimmedText = text.trim();
+        if (trimmedText.length === 0) {
+            return new Response(
+                JSON.stringify({ error: 'Comment cannot be empty' }),
+                {
+                    status: 400,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        if (trimmedText.length > 200) {
+            return new Response(
+                JSON.stringify({ error: 'Comment is too long (max 200 characters)' }),
+                {
+                    status: 400,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        const accessToken = await getAccessToken(env);
+
+        // Get metadata
+        const metadataFile = await listFilesInFolder(
+            accessToken,
+            env.GOOGLE_DRIVE_FOLDER_ID,
+            CONFIG.metadataFileName
+        );
+
+        if (!metadataFile) {
+            return new Response(
+                JSON.stringify({ error: 'Metadata not found' }),
+                {
+                    status: 404,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        // Fetch metadata
+        const metadataBuffer = await getFileFromGoogleDrive(accessToken, metadataFile.id);
+        const metadataText = new TextDecoder().decode(metadataBuffer);
+        const metadata = JSON.parse(metadataText);
+
+        // Find the item
+        const item = metadata.items.find(i => i.id === itemId);
+        if (!item) {
+            return new Response(
+                JSON.stringify({ error: 'Item not found' }),
+                {
+                    status: 404,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        // Initialize comments array if it doesn't exist
+        if (!item.comments) {
+            item.comments = [];
+        }
+
+        // Create new comment
+        const newComment = {
+            text: trimmedText,
+            timestamp: Date.now()
+        };
+
+        // Add comment to item
+        item.comments.push(newComment);
+        metadata.lastUpdated = Date.now();
+
+        // Update metadata file
+        const updatedMetadata = JSON.stringify(metadata, null, 2);
+        await updateFileInGoogleDrive(
+            accessToken,
+            metadataFile.id,
+            new TextEncoder().encode(updatedMetadata),
+            'application/json'
+        );
+
+        return new Response(
+            JSON.stringify({
+                success: true,
+                comments: item.comments
+            }),
+            {
+                status: 200,
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
+
+    } catch (error) {
+        console.error('Error adding comment:', error);
+        return new Response(
+            JSON.stringify({ error: error.message || 'Failed to add comment' }),
+            {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
     }
 }
 
