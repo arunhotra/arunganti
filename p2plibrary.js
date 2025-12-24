@@ -343,6 +343,22 @@ function handleRetry() {
  * Toggle borrowing status of a book
  */
 async function toggleBorrowingStatus(itemId, borrowedStatus) {
+    // Optimistically update the UI immediately
+    const item = state.items.find(i => i.id === itemId);
+    if (item) {
+        item.borrowed = borrowedStatus;
+    }
+
+    // Update the toggle label text immediately
+    const galleryItem = document.querySelector(`[data-item-id="${itemId}"]`);
+    if (galleryItem) {
+        const labelText = galleryItem.querySelector('.toggle-label-text');
+        if (labelText) {
+            labelText.textContent = borrowedStatus ? 'Borrowed' : 'Available';
+        }
+    }
+
+    // Send update to server in the background
     try {
         const response = await fetch(`${CONFIG.workerUrl}/toggle-borrowed/${itemId}`, {
             method: 'PATCH',
@@ -358,15 +374,10 @@ async function toggleBorrowingStatus(itemId, borrowedStatus) {
             throw new Error(data.error || 'Failed to update status');
         }
 
-        // Wait a moment for the update to propagate, then reload
-        setTimeout(() => {
-            loadGalleryItems();
-        }, 500);
-
     } catch (error) {
         console.error('Toggle status error:', error);
         showError(error.message || 'Failed to update borrowing status. Please try again.');
-        // Reload gallery to reset checkbox state on error
+        // Reload gallery to restore correct state on error
         loadGalleryItems();
     }
 }
@@ -559,7 +570,6 @@ function createGalleryItem(item) {
     const toggleText = borrowed ? 'Mark as Available' : 'Mark as Borrowed';
 
     div.innerHTML = `
-        <span class="borrowing-status ${borrowedClass}">${borrowedText}</span>
         <button class="gallery-item-delete" data-item-id="${item.id}" aria-label="Delete book">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -583,7 +593,7 @@ function createGalleryItem(item) {
 
             <div class="borrowing-toggle-container">
                 <label class="borrowing-toggle-label">
-                    <span class="toggle-label-text">Mark as ${borrowed ? 'Available' : 'Borrowed'}</span>
+                    <span class="toggle-label-text">${borrowed ? 'Borrowed' : 'Available'}</span>
                     <input
                         type="checkbox"
                         class="borrowing-toggle-checkbox"
