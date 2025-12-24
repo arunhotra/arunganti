@@ -410,25 +410,71 @@
     margin-top: 8px;
 }
 
-/* Toggle Borrowed Button */
-.toggle-borrowed-btn {
-    width: 100%;
-    padding: 8px 16px;
-    margin-top: 10px;
-    background: rgba(59, 130, 246, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    color: white;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* Borrowing Toggle Switch */
+.borrowing-toggle-container {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.toggle-borrowed-btn:hover {
-    background: rgba(59, 130, 246, 1);
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+.borrowing-toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-label-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+}
+
+.borrowing-toggle-checkbox {
+    display: none;
+}
+
+.borrowing-toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.borrowing-toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    top: 2px;
+    left: 3px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.borrowing-toggle-checkbox:checked + .borrowing-toggle-switch {
+    background: rgba(251, 146, 60, 0.8);
+    border-color: rgba(251, 146, 60, 0.9);
+}
+
+.borrowing-toggle-checkbox:checked + .borrowing-toggle-switch::before {
+    left: 25px;
+    background: white;
+}
+
+.borrowing-toggle-label:hover .borrowing-toggle-switch {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.borrowing-toggle-checkbox:checked + .borrowing-toggle-switch:hover {
+    background: rgba(251, 146, 60, 1);
 }
 
 /* Comments Section */

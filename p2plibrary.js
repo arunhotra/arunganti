@@ -342,16 +342,14 @@ function handleRetry() {
 /**
  * Toggle borrowing status of a book
  */
-async function toggleBorrowingStatus(itemId, currentStatus) {
-    const newStatus = !currentStatus;
-
+async function toggleBorrowingStatus(itemId, borrowedStatus) {
     try {
         const response = await fetch(`${CONFIG.workerUrl}/toggle-borrowed/${itemId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ borrowed: newStatus })
+            body: JSON.stringify({ borrowed: borrowedStatus })
         });
 
         const data = await response.json();
@@ -366,6 +364,8 @@ async function toggleBorrowingStatus(itemId, currentStatus) {
     } catch (error) {
         console.error('Toggle status error:', error);
         showError(error.message || 'Failed to update borrowing status. Please try again.');
+        // Reload gallery to reset checkbox state on error
+        loadGalleryItems();
     }
 }
 
@@ -579,9 +579,18 @@ function createGalleryItem(item) {
             ${item.notes ? `<p class="book-notes">Notes: ${escapeHtml(item.notes)}</p>` : ''}
             <p class="book-timestamp">${formatTimestamp(item.timestamp)}</p>
 
-            <button class="toggle-borrowed-btn" data-item-id="${item.id}" data-borrowed="${borrowed}">
-                ${toggleText}
-            </button>
+            <div class="borrowing-toggle-container">
+                <label class="borrowing-toggle-label">
+                    <span class="toggle-label-text">Mark as ${borrowed ? 'Available' : 'Borrowed'}</span>
+                    <input
+                        type="checkbox"
+                        class="borrowing-toggle-checkbox"
+                        data-item-id="${item.id}"
+                        ${borrowed ? 'checked' : ''}
+                    />
+                    <span class="borrowing-toggle-switch"></span>
+                </label>
+            </div>
 
             <!-- Comments Section -->
             <div class="gallery-item-comments">
@@ -609,9 +618,9 @@ function createGalleryItem(item) {
 
     // Add click handler to open modal
     div.addEventListener('click', (e) => {
-        // Don't open modal if clicking delete button, toggle button, or comment section
+        // Don't open modal if clicking delete button, toggle, or comment section
         if (!e.target.closest('.gallery-item-delete') &&
-            !e.target.closest('.toggle-borrowed-btn') &&
+            !e.target.closest('.borrowing-toggle-container') &&
             !e.target.closest('.gallery-item-comments')) {
             openImageModal(item);
         }
@@ -625,11 +634,11 @@ function createGalleryItem(item) {
     });
 
     // Add toggle borrowed handler
-    const toggleBtn = div.querySelector('.toggle-borrowed-btn');
-    toggleBtn.addEventListener('click', (e) => {
+    const toggleCheckbox = div.querySelector('.borrowing-toggle-checkbox');
+    toggleCheckbox.addEventListener('change', (e) => {
         e.stopPropagation();
-        const currentStatus = e.target.dataset.borrowed === 'true';
-        toggleBorrowingStatus(item.id, currentStatus);
+        const isChecked = e.target.checked;
+        toggleBorrowingStatus(item.id, isChecked);
     });
 
     // Add comment submit handler
