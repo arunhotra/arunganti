@@ -1,0 +1,22 @@
+# Wrangler configuration for P2P Library Worker
+# Deploy with: wrangler deploy --config wrangler-p2plibrary.toml
+
+name = "p2plibrary-worker"
+main = "p2plibrary-worker.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespace for Rate Limiting
+# Create namespace with: wrangler kv:namespace create "RATE_LIMIT_KV" --config wrangler-p2plibrary.toml
+# Then update the id below with the generated namespace ID
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "62e834a80ec24af4a0da75cc1a0b35d5"
+
+# Worker configuration
+[build]
+command = ""
+
+# Routes (update with your actual domain)
+# [[routes]]
+# pattern = "p2plibrary-worker.arunhotra.workers.dev/*"
+# zone_name = "arunhotra.com"

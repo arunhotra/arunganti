@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="P2P Library - Share books you own with others for borrowing">
+    <title>P2P Library | Personal Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared-styles.css">
+    <link rel="stylesheet" href="p2plibrary.css">
+</head>
+<body>
+    <!-- Fixed Background -->
+    <div class="hero-background p2plibrary-bg"></div>
+
+    <!-- Back Navigation -->
+    <nav class="back-nav" aria-label="Back navigation">
+        <a href="personal-projects.html" class="back-link" aria-label="Back to projects">
+            ← Back to Projects
+        </a>
+    </nav>
+
+    <!-- Main Tool Container -->
+    <main class="tool-container">
+        <div class="tool-card">
+            <!-- Header -->
+            <header class="tool-header">
+                <h1>P2P Library</h1>
+                <p class="tool-description">
+                    Share books you own with others for borrowing
+                </p>
+            </header>
+
+            <!-- Upload Section -->
+            <section class="upload-section" aria-label="Upload book">
+                <div class="upload-controls">
+                    <label for="imageInput" class="file-input-label">
+                        <span class="camera-icon">📷</span>
+                        <span class="label-text">Photo of Book Cover</span>
+                    </label>
+                    <input
+                        type="file"
+                        id="imageInput"
+                        accept="image/*"
+                        capture="environment"
+                        aria-label="Select book cover image"
+                    />
+                </div>
+
+                <div id="imagePreview" class="image-preview" style="display: none;">
+                    <!-- Preview will be inserted here by JavaScript -->
+                </div>
+
+                <div class="book-fields">
+                    <label for="titleInput">Book Title:</label>
+                    <input
+                        type="text"
+                        id="titleInput"
+                        placeholder="The Great Gatsby"
+                        maxlength="100"
+                        aria-label="Book title"
+                    />
+
+                    <label for="authorInput">Author:</label>
+                    <input
+                        type="text"
+                        id="authorInput"
+                        placeholder="F. Scott Fitzgerald"
+                        maxlength="100"
+                        aria-label="Author name"
+                    />
+
+                    <label for="summaryInput">Book Summary (4-5 sentences):</label>
+                    <textarea
+                        id="summaryInput"
+                        placeholder="Brief summary of the book..."
+                        maxlength="500"
+                        rows="4"
+                        aria-label="Book summary"
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="summaryCharCount">0</span>/500
+                    </div>
+
+                    <label for="notesInput">Your Notes (optional):</label>
+                    <textarea
+                        id="notesInput"
+                        placeholder="e.g., Good condition, pickup from downtown..."
+                        maxlength="200"
+                        rows="2"
+                        aria-label="Personal notes"
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="notesCharCount">0</span>/200
+                    </div>
+                </div>
+
+                <button id="uploadBtn" class="btn-primary" disabled>
+                    Share Book
+                </button>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Uploading your book...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="error-state" style="display: none;">
+                <p class="error-message" id="errorMessage"></p>
+                <button id="retryBtn" class="btn-secondary">Try Again</button>
+            </div>
+
+            <!-- Success State -->
+            <div id="successState" class="success-state" style="display: none;">
+                <p id="successMessage" class="success-message">✓ Book shared successfully!</p>
+            </div>
+
+            <!-- Gallery Section -->
+            <section id="gallerySection" class="gallery-section" aria-label="Available books gallery">
+                <h2 class="gallery-title">Available Books</h2>
+                <div id="galleryGrid" class="gallery-grid">
+                    <!-- Gallery items will be populated by JavaScript -->
+                </div>
+                <div id="galleryLoading" class="gallery-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Loading books...</p>
+                </div>
+                <div id="galleryEmpty" class="gallery-empty" style="display: none;">
+                    <p>No books yet. Be the first to share a book!</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal for full-size image view -->
+    <div id="imageModal" class="image-modal" style="display: none;" aria-label="Full size image view" role="dialog">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
+            <img id="modalImage" src="" alt="Full size book cover" />
+            <div class="modal-info">
+                <div id="modalBookInfo" class="modal-book-info"></div>
+                <p id="modalTimestamp" class="modal-timestamp"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="p2plibrary.js?v=1.0.0"></script>
+</body>
+</html>
