@@ -358,8 +358,10 @@ async function toggleBorrowingStatus(itemId, borrowedStatus) {
             throw new Error(data.error || 'Failed to update status');
         }
 
-        // Reload gallery to show updated status
-        loadGalleryItems();
+        // Wait a moment for the update to propagate, then reload
+        setTimeout(() => {
+            loadGalleryItems();
+        }, 500);
 
     } catch (error) {
         console.error('Toggle status error:', error);
