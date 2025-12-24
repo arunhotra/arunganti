@@ -471,7 +471,9 @@ async function handleGetItems(request, env) {
                     status: 200,
                     headers: {
                         'Content-Type': 'application/json',
-                        'Cache-Control': 'public, max-age=300' // 5 minutes
+                        'Cache-Control': 'no-store, no-cache, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
                     }
                 }
             );
@@ -488,7 +490,9 @@ async function handleGetItems(request, env) {
                 status: 200,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cache-Control': 'public, max-age=300'
+                    'Cache-Control': 'no-store, no-cache, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
                 }
             }
         );
