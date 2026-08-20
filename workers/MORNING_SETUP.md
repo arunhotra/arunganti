@@ -62,7 +62,7 @@ request carrying a session token it can verify.
    itself).
 
 There's no cookie involved anywhere - the worker
-(`morning-worker.arunhotra.workers.dev`) and the site (`arunhotra.com`)
+(`morning-worker.arunhotra.workers.dev`) and the site (`arunganti.com`)
 are different origins, and this repo has never used cookies, so a bearer
 token in `localStorage` was the natural fit.
 
@@ -96,7 +96,7 @@ If you lose the QR/URI, or just want a fresh secret:
 cd workers
 NEW_SECRET=$(python3 -c "import os, base64; print(base64.b32encode(os.urandom(20)).decode('utf-8').rstrip('='))")
 echo "$NEW_SECRET" | wrangler secret put TOTP_SECRET --config wrangler-morning.toml
-echo "otpauth://totp/arunhotra.com:morning?secret=${NEW_SECRET}&issuer=arunhotra.com&algorithm=SHA1&digits=6&period=30"
+echo "otpauth://totp/arunganti.com:morning?secret=${NEW_SECRET}&issuer=arunganti.com&algorithm=SHA1&digits=6&period=30"
 ```
 
 Scan the printed URI into your authenticator app immediately, then remove

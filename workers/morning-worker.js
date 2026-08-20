@@ -19,7 +19,7 @@ import {
 // ============================================================================
 
 const CONFIG = {
-    corsOrigins: ['https://arunhotra.com', 'http://localhost:8000'],
+    corsOrigins: ['https://arunganti.com', 'http://localhost:8000'],
     rateLimit: {
         maxAttempts: 5,
         windowMinutes: 15
