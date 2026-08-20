@@ -1,0 +1,22 @@
+# Wrangler configuration for Morning Worker
+# Deploy with: wrangler deploy --config wrangler-morning.toml
+
+name = "morning-worker"
+main = "morning-worker.js"
+compatibility_date = "2024-01-01"
+
+# KV Namespace for Rate Limiting
+# Create namespace with: wrangler kv:namespace create "RATE_LIMIT_KV" --config wrangler-morning.toml
+# Then update the id below with the generated namespace ID
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "CREATE_NEW_KV_NAMESPACE_ID_HERE"
+
+# Worker configuration
+[build]
+command = ""
+
+# Routes (update with your actual domain)
+# [[routes]]
+# pattern = "morning-worker.arunhotra.workers.dev/*"
+# zone_name = "arunhotra.com"

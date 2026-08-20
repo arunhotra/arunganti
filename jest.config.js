@@ -16,6 +16,8 @@ module.exports = {
     'script.js',
     'twitterizer.js',
     'giveaway.js',
+    'morning.js',
+    'workers/totp.js',
     '!node_modules/**',
     '!coverage/**'
   ],

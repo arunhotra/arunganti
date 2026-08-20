@@ -1,0 +1,201 @@
+/* ============================================================================
+   MORNING PAGE STYLES
+   Glassmorphism design for the private morning page
+   ============================================================================ */
+
+/* Background Image (reuses the site's default hero background) */
+.morning-bg {
+    background-image: url('pics/alternate-main.jpg');
+}
+
+/* Mobile background (different image) */
+@media (max-width: 480px) {
+    .morning-bg {
+        background-image: url('pics/main-page.jpg');
+    }
+}
+
+/* Tool Container - Full viewport height with flexbox centering */
+.tool-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px 40px;
+}
+
+/* Main Tool Card - Glassmorphism */
+.tool-card {
+    background: rgba(15, 25, 40, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    max-width: 480px;
+    width: 100%;
+}
+
+/* Header Section */
+.tool-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.tool-header h1 {
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.tool-description {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+}
+
+/* Passcode Form */
+.passcode-container {
+    margin-bottom: 20px;
+}
+
+.passcode-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#passcodeInput {
+    width: 100%;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 28px;
+    font-family: inherit;
+    letter-spacing: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+#passcodeInput::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 12px;
+}
+
+#passcodeInput:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+#verifyBtn {
+    width: 100%;
+}
+
+/* Loading State */
+.loading-state {
+    text-align: center;
+    padding: 24px 0 0;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 16px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+}
+
+/* Error State */
+.error-state {
+    text-align: center;
+    padding: 16px;
+    background: rgba(255, 100, 100, 0.1);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.error-message {
+    color: rgba(255, 150, 150, 0.95);
+    font-size: 14px;
+}
+
+/* Content Section */
+.content-section {
+    text-align: center;
+}
+
+.content-placeholder {
+    padding: 32px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 24px;
+}
+
+.content-placeholder p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.logout-btn {
+    width: 100%;
+}
+
+/* Responsive Breakpoints */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .tool-card {
+        padding: 32px 24px;
+    }
+
+    .tool-header h1 {
+        font-size: 36px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .tool-container {
+        padding: 80px 16px 32px;
+    }
+
+    .tool-card {
+        padding: 24px 16px;
+    }
+
+    .tool-header h1 {
+        font-size: 32px;
+    }
+
+    .tool-description {
+        font-size: 14px;
+    }
+
+    #passcodeInput {
+        font-size: 24px;
+        letter-spacing: 8px;
+    }
+}
