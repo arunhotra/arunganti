@@ -16,7 +16,6 @@ This is a static HTML/CSS/JavaScript portfolio showcasing technical expertise, p
 - **Mobile Navigation**: Hamburger menu with smooth slide-out sidebar on mobile devices
 - **Interactive Phrases**: Rotating text elements for About Me and Hobbies sections
 - **Twitterizer Tool**: AI-powered hashtag generator for Twitter posts with caching
-- **F5 Projects Showcase**: Dedicated page showcasing F5 BIG-IP automation projects
 - **Personal Projects Gallery**: Collection of side projects and tools
 - **Test-Driven Development**: Comprehensive Jest test suite with 70%+ coverage
 - **Accessibility First**: WCAG compliance with ARIA labels and semantic HTML
@@ -35,7 +34,6 @@ This is a static HTML/CSS/JavaScript portfolio showcasing technical expertise, p
 ```
 arunganti/
 ├── index.html                 # Main landing page
-├── f5-projects.html          # F5 BIG-IP projects showcase
 ├── personal-projects.html    # Personal projects gallery
 ├── twitterizer.html          # AI hashtag generator tool
 ├── styles.css                # Main stylesheet (glassmorphism)
@@ -103,7 +101,7 @@ Tests run in containerized environment (Podman/Docker required):
 - Hero section with glassmorphic background
 - Navigation bar with smooth scroll anchors
 - Interactive About Me phrases: "techie", "creative thinker", "perpetual learner", "bon vivant"
-- Projects section with links to F5 and Personal Projects
+- Projects section with a link to Personal Projects
 - Hobbies section with interactive phrases: "liverpool", "dancing", "improv", "volleyball"
 - Mobile hamburger menu with sidebar navigation
 - Resume section placeholder
@@ -112,13 +110,6 @@ Tests run in containerized environment (Podman/Docker required):
 - Fixed background image with parallax scrolling effect
 - Mobile-responsive with hamburger menu
 - Smooth scroll navigation between sections
-
-### F5 Projects (`f5-projects.html`)
-Showcase of F5 BIG-IP and Ansible automation projects:
-- mcp-bigip: Model Context Protocol server for F5 BIG-IP
-- Multiple automation and infrastructure projects
-- Project descriptions with GitHub links
-- Responsive card-based layout
 
 ### Personal Projects (`personal-projects.html`)
 Gallery of side projects including:

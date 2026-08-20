@@ -163,23 +163,16 @@ describe('DOM Structure and Elements', () => {
       expect(projectsPhrases.classList.contains('active')).toBe(false);
     });
 
-    test('has F5 Projects link', () => {
-      const f5Link = document.querySelector('.projects-phrases .project-phrase.left');
-      expect(f5Link).toBeInTheDocument();
-      expect(f5Link.tagName).toBe('A');
-      expect(f5Link.textContent).toBe('F5 Projects');
-    });
-
     test('has Personal Projects link', () => {
-      const personalLink = document.querySelector('.projects-phrases .project-phrase.right');
+      const personalLink = document.querySelector('.projects-phrases .project-phrase');
       expect(personalLink).toBeInTheDocument();
       expect(personalLink.tagName).toBe('A');
       expect(personalLink.textContent).toBe('Personal Projects');
     });
 
-    test('both project links have project-phrase class', () => {
+    test('only one project link with project-phrase class', () => {
       const projectLinks = document.querySelectorAll('.projects-phrases .project-phrase');
-      expect(projectLinks.length).toBe(2);
+      expect(projectLinks.length).toBe(1);
     });
   });
 
