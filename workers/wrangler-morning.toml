@@ -10,7 +10,7 @@ compatibility_date = "2024-01-01"
 # Then update the id below with the generated namespace ID
 [[kv_namespaces]]
 binding = "RATE_LIMIT_KV"
-id = "CREATE_NEW_KV_NAMESPACE_ID_HERE"
+id = "4c6645b13e5345bc96d86477bfc1b7ed"
 
 # Worker configuration
 [build]
