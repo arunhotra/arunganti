@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Private page">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Morning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared-styles.css">
+    <link rel="stylesheet" href="morning.css">
+</head>
+<body>
+    <!-- Fixed Background -->
+    <div class="hero-background morning-bg"></div>
+
+    <!-- Back Navigation -->
+    <nav class="back-nav" aria-label="Back navigation">
+        <a href="index.html" class="back-link" aria-label="Back to home">
+            ← Home
+        </a>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="tool-container">
+        <div class="tool-card">
+            <header class="tool-header">
+                <h1>Morning</h1>
+                <p class="tool-description">Enter your code to continue</p>
+            </header>
+
+            <!-- Passcode Form -->
+            <form id="passcodeForm" class="passcode-form" aria-label="Enter authentication code">
+                <div class="passcode-container">
+                    <label for="passcodeInput">6-digit code</label>
+                    <input
+                        type="text"
+                        id="passcodeInput"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        maxlength="6"
+                        autocomplete="one-time-code"
+                        placeholder="000000"
+                        aria-describedby="passcodeError"
+                        required
+                    />
+                </div>
+
+                <button type="submit" id="verifyBtn" class="btn-primary">
+                    Unlock
+                </button>
+
+                <div id="passcodeError" class="error-state" style="display: none;" role="alert" aria-live="polite">
+                    <p id="passcodeErrorMessage" class="error-message"></p>
+                </div>
+
+                <div id="verifyLoading" class="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Verifying...</p>
+                </div>
+            </form>
+
+            <!-- Protected Content -->
+            <section id="contentSection" class="content-section" style="display: none;" aria-label="Morning brief">
+                <div id="contentLoading" class="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Loading...</p>
+                </div>
+
+                <div id="contentPlaceholder" class="content-placeholder" style="display: none;">
+                    <p id="contentMessage"></p>
+                </div>
+
+                <button type="button" id="logoutBtn" class="btn-secondary logout-btn">
+                    Log out
+                </button>
+            </section>
+        </div>
+    </main>
+
+    <script src="morning.js?v=1.0.0"></script>
+</body>
+</html>
