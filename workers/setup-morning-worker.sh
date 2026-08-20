@@ -38,7 +38,7 @@ echo ""
 echo "Step 2: Creating KV Namespace for Rate Limiting"
 echo "----------------------------------------------------------------------"
 
-KV_OUTPUT=$(wrangler kv:namespace create "RATE_LIMIT_KV" --config wrangler-morning.toml 2>&1)
+KV_OUTPUT=$(wrangler kv namespace create "MORNING_RATE_LIMIT_KV" --config wrangler-morning.toml 2>&1)
 echo "$KV_OUTPUT"
 
 # Extract the namespace ID from output
@@ -49,7 +49,7 @@ if [ -z "$KV_ID" ]; then
     echo "Warning: Could not extract KV namespace ID automatically."
     echo "Please check if the namespace already exists:"
     echo ""
-    echo "  wrangler kv:namespace list"
+    echo "  wrangler kv namespace list"
     echo ""
     read -p "Enter the KV namespace ID manually: " KV_ID
 fi
