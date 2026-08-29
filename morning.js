@@ -27,10 +27,15 @@ function initElements() {
         passcodeErrorMessage: document.getElementById('passcodeErrorMessage'),
         verifyLoading: document.getElementById('verifyLoading'),
 
+        toolCard: document.querySelector('.tool-card'),
+
         contentSection: document.getElementById('contentSection'),
         contentLoading: document.getElementById('contentLoading'),
         contentPlaceholder: document.getElementById('contentPlaceholder'),
         contentMessage: document.getElementById('contentMessage'),
+        datingEventsCard: document.getElementById('datingEventsCard'),
+        datingEventsUpdated: document.getElementById('datingEventsUpdated'),
+        datingEventsList: document.getElementById('datingEventsList'),
         logoutBtn: document.getElementById('logoutBtn')
     };
 }
@@ -93,12 +98,14 @@ function showPasscodeForm() {
     elements.passcodeForm.style.display = 'block';
     elements.contentSection.style.display = 'none';
     elements.passcodeInput.value = '';
+    elements.toolCard.classList.remove('tool-card--wide');
     hidePasscodeError();
 }
 
 function showContent() {
     elements.passcodeForm.style.display = 'none';
     elements.contentSection.style.display = 'block';
+    elements.toolCard.classList.add('tool-card--wide');
 }
 
 function showPasscodeError(message) {
@@ -164,14 +171,79 @@ async function handleVerifySubmit(event) {
 }
 
 /**
- * Fetch protected content from the worker. This is the seam where real
- * content (news, calendar, projects, etc.) will render once it exists -
- * for now the worker only ever returns a placeholder message.
+ * Render the dating-events section from the worker's `datingEvents`
+ * payload. Returns true if there was anything to show, so the caller
+ * knows whether to fall back to the placeholder message instead.
  */
+function renderDatingEvents(datingEvents) {
+    const events = (datingEvents && Array.isArray(datingEvents.events)) ? datingEvents.events : [];
+
+    if (events.length === 0) {
+        elements.datingEventsCard.style.display = 'none';
+        return false;
+    }
+
+    elements.datingEventsUpdated.textContent = datingEvents.updatedAt
+        ? `Updated ${new Date(datingEvents.updatedAt).toLocaleString()}`
+        : '';
+
+    elements.datingEventsList.innerHTML = '';
+    events.forEach((event) => {
+        const li = document.createElement('li');
+        li.className = 'event-item';
+
+        const name = document.createElement('span');
+        name.className = 'event-name';
+        name.textContent = event.name || 'Untitled event';
+
+        const meta = document.createElement('span');
+        meta.className = 'event-meta';
+        meta.textContent = [event.organizer, event.date, event.time, event.venue]
+            .filter(Boolean)
+            .join(' • ');
+
+        li.appendChild(name);
+        li.appendChild(meta);
+
+        if (event.link) {
+            const link = document.createElement('a');
+            link.className = 'event-link';
+            link.href = event.link;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = event.price ? `Details (${event.price}) ↗` : 'Details ↗';
+            li.appendChild(link);
+        }
+
+        elements.datingEventsList.appendChild(li);
+    });
+
+    elements.datingEventsCard.style.display = 'block';
+    return true;
+}
+
+/**
+ * Render whatever the worker returned. Each dashboard section (dating
+ * events today, others later) gets its own render function and its own
+ * key on the response payload - this just wires them into the shared
+ * placeholder/fallback message.
+ */
+function renderContent(data) {
+    const hasDatingEvents = renderDatingEvents(data.datingEvents);
+
+    if (hasDatingEvents) {
+        elements.contentPlaceholder.style.display = 'none';
+    } else {
+        elements.contentMessage.textContent = data.message || 'No dating events found for the coming week.';
+        elements.contentPlaceholder.style.display = 'block';
+    }
+}
+
 async function fetchContent() {
     const token = getStoredToken();
 
     elements.contentPlaceholder.style.display = 'none';
+    elements.datingEventsCard.style.display = 'none';
     elements.contentLoading.style.display = 'block';
 
     try {
@@ -187,9 +259,8 @@ async function fetchContent() {
 
         const data = await response.json();
 
-        elements.contentMessage.textContent = data.message || 'Coming soon.';
         elements.contentLoading.style.display = 'none';
-        elements.contentPlaceholder.style.display = 'block';
+        renderContent(data);
 
     } catch (error) {
         console.error('Content fetch error:', error);
@@ -249,6 +320,8 @@ if (typeof module !== 'undefined' && module.exports) {
         storeToken,
         clearToken,
         isTokenExpired,
+        renderDatingEvents,
+        renderContent,
         CONFIG
     };
 }

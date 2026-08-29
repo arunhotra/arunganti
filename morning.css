@@ -35,6 +35,15 @@
     padding: 40px;
     max-width: 480px;
     width: 100%;
+    transition: max-width 0.3s ease;
+}
+
+/* Widened once the passcode gate is passed and real content is showing -
+   toggled by morning.js (showContent/showPasscodeForm), not by viewport
+   size, so the compact passcode screen is unaffected. */
+.tool-card--wide {
+    max-width: 1400px;
+    padding: 48px;
 }
 
 /* Header Section */
@@ -157,6 +166,64 @@
     color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
     line-height: 1.5;
+}
+
+/* Content Card Sections (dating events, and future dashboard sections) */
+.content-card-section {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.content-card-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 4px;
+}
+
+.content-card-section .updated-at {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 16px;
+}
+
+.events-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.event-item {
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+}
+
+.event-item .event-name {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 4px;
+}
+
+.event-item .event-meta {
+    display: block;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 6px;
+}
+
+.event-item .event-link {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: underline;
 }
 
 .logout-btn {

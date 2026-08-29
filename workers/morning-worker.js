@@ -141,16 +141,31 @@ async function handleContent(request, env) {
         );
     }
 
-    // Placeholder response - this is the seam where real content
-    // (news, calendar, projects, etc.) gets added later without
-    // touching the auth contract above.
+    // Content is written by the daily "boston-dating-events" scheduled
+    // task via `wrangler kv key put`, not computed here - the worker just
+    // serves whatever was last written. Additional dashboard sections
+    // (dancing, meetups, etc.) get their own KV keys the same way.
+    const datingEvents = await readJSONFromKV(env.MORNING_CONTENT_KV, 'dating_events');
+
     return new Response(
         JSON.stringify({
-            placeholder: true,
-            message: "Coming soon — this section isn't built yet."
+            datingEvents: datingEvents || { updatedAt: null, events: [] }
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
+}
+
+async function readJSONFromKV(kv, key) {
+    if (!kv) {
+        return null;
+    }
+    try {
+        const raw = await kv.get(key);
+        return raw ? JSON.parse(raw) : null;
+    } catch (error) {
+        console.error(`Failed to read/parse KV key "${key}":`, error);
+        return null;
+    }
 }
 
 // ============================================================================

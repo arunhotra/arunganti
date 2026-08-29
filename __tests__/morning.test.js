@@ -127,6 +127,14 @@ describe('Morning Page - Protected Content Section', () => {
         const logoutBtn = section.querySelector('#logoutBtn');
         expect(logoutBtn).toBeTruthy();
     });
+
+    test('dating events card exists inside the content section and is hidden by default', () => {
+        const section = document.getElementById('contentSection');
+        const card = section.querySelector('#datingEventsCard');
+        expect(card).toBeTruthy();
+        expect(card.style.display).toBe('none');
+        expect(card.querySelector('#datingEventsList')).toBeTruthy();
+    });
 });
 
 describe('Morning Page - Accessibility', () => {
@@ -353,5 +361,94 @@ describe('morning.js - Auth flow (Integration)', () => {
 
         expect(localStorage.getItem('morning_session_token')).toBeNull();
         expect(document.getElementById('passcodeForm').style.display).toBe('block');
+    });
+});
+
+// ============================================================================
+// Dating events rendering
+// ============================================================================
+
+describe('morning.js - renderDatingEvents', () => {
+    let morningJs;
+
+    beforeEach(() => {
+        document.documentElement.innerHTML = html;
+        jest.resetModules();
+        morningJs = require('../morning.js');
+    });
+
+    test('returns false and hides the card when there are no events', () => {
+        const shown = morningJs.renderDatingEvents({ updatedAt: null, events: [] });
+        expect(shown).toBe(false);
+        expect(document.getElementById('datingEventsCard').style.display).toBe('none');
+    });
+
+    test('returns false when datingEvents is missing entirely', () => {
+        expect(morningJs.renderDatingEvents(undefined)).toBe(false);
+    });
+
+    test('renders an event with a name, meta line, and link', () => {
+        const shown = morningJs.renderDatingEvents({
+            updatedAt: '2026-08-24T10:00:00Z',
+            events: [{
+                name: 'Shuffle Dating',
+                organizer: 'Shuffle',
+                date: 'Tue Aug 25',
+                time: '7:00 PM',
+                venue: 'Portico Brewing',
+                link: 'https://shuffle.dating/boston',
+                price: '$25'
+            }]
+        });
+
+        expect(shown).toBe(true);
+        expect(document.getElementById('datingEventsCard').style.display).toBe('block');
+
+        const items = document.querySelectorAll('#datingEventsList .event-item');
+        expect(items.length).toBe(1);
+        expect(items[0].querySelector('.event-name').textContent).toBe('Shuffle Dating');
+        expect(items[0].querySelector('.event-meta').textContent).toContain('Portico Brewing');
+
+        const link = items[0].querySelector('.event-link');
+        expect(link.href).toBe('https://shuffle.dating/boston');
+        expect(link.textContent).toContain('$25');
+    });
+
+    test('renders events without a link gracefully', () => {
+        morningJs.renderDatingEvents({
+            updatedAt: null,
+            events: [{ name: 'No Link Event' }, { name: 'Second Event', venue: 'Somewhere' }]
+        });
+
+        const items = document.querySelectorAll('#datingEventsList .event-item');
+        expect(items.length).toBe(2);
+        expect(items[0].querySelector('.event-link')).toBeNull();
+    });
+});
+
+describe('morning.js - renderContent', () => {
+    let morningJs;
+
+    beforeEach(() => {
+        document.documentElement.innerHTML = html;
+        jest.resetModules();
+        morningJs = require('../morning.js');
+    });
+
+    test('falls back to the placeholder message when there are no dating events', () => {
+        morningJs.renderContent({ message: 'Nothing yet.' });
+
+        expect(document.getElementById('contentPlaceholder').style.display).toBe('block');
+        expect(document.getElementById('contentMessage').textContent).toBe('Nothing yet.');
+        expect(document.getElementById('datingEventsCard').style.display).toBe('none');
+    });
+
+    test('hides the placeholder and shows the card when dating events exist', () => {
+        morningJs.renderContent({
+            datingEvents: { updatedAt: null, events: [{ name: 'Event' }] }
+        });
+
+        expect(document.getElementById('contentPlaceholder').style.display).toBe('none');
+        expect(document.getElementById('datingEventsCard').style.display).toBe('block');
     });
 });

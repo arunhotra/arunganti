@@ -12,6 +12,14 @@ compatibility_date = "2024-01-01"
 binding = "RATE_LIMIT_KV"
 id = "4c6645b13e5345bc96d86477bfc1b7ed"
 
+# KV Namespace for morning content (dating events, and future dashboard
+# sections) written by the daily "boston-dating-events" scheduled task.
+# Create namespace with: wrangler kv namespace create "MORNING_CONTENT_KV" --config wrangler-morning.toml
+# Then update the id below with the generated namespace ID.
+[[kv_namespaces]]
+binding = "MORNING_CONTENT_KV"
+id = "93f97a465f194b4dbfc4a88a9d30d84e"
+
 # Worker configuration
 [build]
 command = ""
