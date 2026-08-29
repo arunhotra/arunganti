@@ -35,6 +35,15 @@
     padding: 40px;
     max-width: 480px;
     width: 100%;
+    transition: max-width 0.3s ease;
+}
+
+/* Widened once the passcode gate is passed and real content is showing -
+   toggled by morning.js (showContent/showPasscodeForm), not by viewport
+   size, so the compact passcode screen is unaffected. */
+.tool-card--wide {
+    max-width: 1400px;
+    padding: 48px;
 }
 
 /* Header Section */
@@ -184,8 +193,8 @@
 
 .events-list {
     list-style: none;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 12px;
 }
 

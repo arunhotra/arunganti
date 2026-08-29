@@ -27,6 +27,8 @@ function initElements() {
         passcodeErrorMessage: document.getElementById('passcodeErrorMessage'),
         verifyLoading: document.getElementById('verifyLoading'),
 
+        toolCard: document.querySelector('.tool-card'),
+
         contentSection: document.getElementById('contentSection'),
         contentLoading: document.getElementById('contentLoading'),
         contentPlaceholder: document.getElementById('contentPlaceholder'),
@@ -96,12 +98,14 @@ function showPasscodeForm() {
     elements.passcodeForm.style.display = 'block';
     elements.contentSection.style.display = 'none';
     elements.passcodeInput.value = '';
+    elements.toolCard.classList.remove('tool-card--wide');
     hidePasscodeError();
 }
 
 function showContent() {
     elements.passcodeForm.style.display = 'none';
     elements.contentSection.style.display = 'block';
+    elements.toolCard.classList.add('tool-card--wide');
 }
 
 function showPasscodeError(message) {
