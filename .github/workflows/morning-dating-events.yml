@@ -1,0 +1,119 @@
+name: Morning Dating Events Refresh
+
+# Refreshes the "Dating Events — This Week" section of the private
+# /morning dashboard (arunganti.com/morning.html). Runs daily; can also
+# be triggered manually from the Actions tab to test changes to the
+# seed list or this prompt without waiting for the schedule.
+on:
+  schedule:
+    # 10:07 UTC ≈ 6am America/New_York (EDT) / 5am (EST). GitHub Actions
+    # cron does not shift for DST, so this drifts by an hour twice a year.
+    - cron: '7 10 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  refresh-dating-events:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Research and publish dating events
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--allowed-tools "Bash(cd:*),Bash(cat:*),Bash(mkdir:*),Bash(rm:*),Bash(wrangler kv key put:*),Bash(npx wrangler kv key put:*),Read,WebSearch,WebFetch"'
+          prompt: |
+            You are refreshing the "Dating Events — This Week" section of a
+            private morning dashboard (arunganti.com/morning.html). This runs
+            fresh every day with no memory of past runs — always regenerate
+            the full list from scratch, don't try to diff or append against a
+            previous run.
+
+            ## 1. Read the seed list
+
+            Read the file `workers/morning-content/dating-events-seed.md` in
+            this checked-out repo. It's a plain-text list of known Greater
+            Boston dating-event organizer/aggregator URLs, grouped under `##`
+            headings, with `#`-prefixed lines as comments to ignore. Always
+            use whatever is currently in the file, don't rely on a memorized
+            list.
+
+            ## 2. Gather events
+
+            For each URL in the seed list, check it (WebFetch, or a targeted
+            WebSearch naming the site if WebFetch doesn't return useful
+            content) for events happening in Greater Boston (Boston proper,
+            Cambridge, Somerville, Brookline, and similarly close-in areas)
+            within the next 7 days from today's date.
+
+            Then run additional fresh web searches to catch anything new or
+            one-off that isn't on any seed source yet — e.g. "Boston speed
+            dating this week", "Boston singles mixer [date range]", "Greater
+            Boston dating event [this week's date range]". Include speed
+            dating, singles mixers/happy hours, dating-app IRL events (Bumble
+            IRL, Hinge, etc.), and similar — not generic non-dating social
+            events.
+
+            Only keep events that are:
+            - Physically in Greater Boston (per the scope above)
+            - Happening within the next 7 days from today's date
+            - Actually dating/singles-focused (skip generic bar nights,
+              concerts, etc. that turn up as noise in searches)
+
+            De-duplicate: the same event often appears on multiple sources
+            (e.g. an organizer's own site + Eventbrite) — merge into one
+            entry and prefer the organizer's own registration link.
+
+            ## 3. Build the JSON payload
+
+            Construct this exact shape:
+
+            ```json
+            {
+              "updatedAt": "<current ISO 8601 timestamp>",
+              "events": [
+                {
+                  "name": "<event name>",
+                  "organizer": "<organizer/brand, e.g. Shuffle Dating>",
+                  "date": "<human-readable date, e.g. 'Tue, Aug 25'>",
+                  "time": "<human-readable time, e.g. '7:00 PM'>",
+                  "venue": "<venue name, e.g. 'Portico Brewing, Somerville'>",
+                  "link": "<direct URL to view/register for the event>",
+                  "price": "<price string if known, e.g. '$25', otherwise omit the field>"
+                }
+              ]
+            }
+            ```
+
+            Sort events chronologically by date/time. If you find zero
+            qualifying events, still write
+            `{"updatedAt": "<iso timestamp>", "events": []}` — don't skip the
+            write.
+
+            ## 4. Publish to Cloudflare KV
+
+            Write the JSON to a temp file, then push it with wrangler (do NOT
+            inline the JSON directly into the shell command — use `--path` to
+            avoid quoting/escaping issues). `CLOUDFLARE_API_TOKEN` is already
+            set in the environment for auth — do not ask for or print it.
+
+            ```bash
+            cd workers
+            cat > /tmp/dating_events.json <<'EOF'
+            <paste the JSON here>
+            EOF
+            npx wrangler kv key put --binding=MORNING_CONTENT_KV dating_events --path=/tmp/dating_events.json --config wrangler-morning.toml --remote
+            rm -f /tmp/dating_events.json
+            ```
+
+            If the wrangler command fails (e.g. auth error), stop and report
+            the failure clearly — do not retry destructive commands.
