@@ -23,3 +23,7 @@ build/
 # Code workspace
 
 *.code-workspace
+
+# Wrangler local dev secrets and state
+workers/.dev.vars
+workers/.wrangler/
